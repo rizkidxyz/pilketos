@@ -1,0 +1,1 @@
+buat manual folder assets buat nyimpen foto/data kandidat
