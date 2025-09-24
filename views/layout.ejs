@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!--
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="icon" href="https://cdn.aceimg.com/e5279ce19.png" type="icon" />
+  <title><% if(locals.title) { %><%= title %><% }else{ %>SiPemilu <% } %></title>
+</head>
+<body class="w-full min-h-screen font-[Montserrat] bg-gradient-to-bl from-red-100 to-red-300">
+  <%- include("./components/Header.ejs") %>
+  <main class="w-full min-h-screen px-4 max-w-4xl mx-auto pt-20 text-red-900 pb-8">
+    <%- body %>
+  </main>
+  <%- include("./components/Footer.ejs") %>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+</html>

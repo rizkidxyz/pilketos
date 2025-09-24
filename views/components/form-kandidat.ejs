@@ -1,0 +1,111 @@
+<div class="w-full flex justify-center mt-8">
+  <form 
+    class="w-full max-w-lg bg-white p-6 rounded-xl shadow-lg space-y-4"
+    action="/tambah-kandidat"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <h2 class="text-xl font-bold text-center mb-4">Tambah Kandidat</h2>
+
+    <!-- Foto -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Foto Kandidat</label>
+      <input 
+        type="file" 
+        name="foto" 
+        id="foto"
+        accept="image/*"
+        class="block w-full text-sm text-gray-700 border rounded-lg cursor-pointer focus:ring-2 focus:ring-red-600 focus:outline-none"
+        onchange="previewImage(event)"
+        required
+      />
+      <!-- Preview -->
+      <div class="mt-3">
+        <img id="preview" class="hidden w-32 h-32 object-cover rounded-lg border" alt="Preview Foto">
+      </div>
+    </div>
+
+    <!-- Nomor -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Kandidat</label>
+      <input 
+        type="number" 
+        name="nomor" 
+        placeholder="Masukkan Nomor Kandidat"
+        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none"
+        required
+      />
+    </div>
+
+    <!-- Nama -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kandidat</label>
+      <input 
+        type="text" 
+        name="nama" 
+        placeholder="Masukkan Nama Kandidat"
+        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none"
+        required
+      />
+    </div>
+
+    <!-- Visi -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Visi</label>
+      <textarea 
+        name="visi" 
+        rows="2"
+        placeholder="Tulis Visi Kandidat"
+        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none resize-none"
+        required
+      ></textarea>
+    </div>
+
+    <!-- Misi -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Misi</label>
+      <textarea 
+        name="misi" 
+        rows="3"
+        placeholder="Tulis Misi Kandidat"
+        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none resize-none"
+        required
+      ></textarea>
+    </div>
+
+    <!-- Detail -->
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">Detail</label>
+      <textarea 
+        name="detail" 
+        rows="3"
+        placeholder="Tulis Detail Kandidat"
+        class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none resize-none"
+      ></textarea>
+    </div>
+
+    <!-- Button -->
+    <button 
+      type="submit"
+      class="w-full bg-red-700 text-white font-semibold py-2 rounded-lg hover:bg-red-800 transition"
+    >
+      Tambah Kandidat
+    </button>
+  </form>
+</div>
+
+<script>
+  function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById("preview");
+    
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        preview.src = e.target.result;
+        preview.classList.remove("hidden");
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+</script>

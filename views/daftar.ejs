@@ -1,0 +1,122 @@
+<div class="w-full max-w-md mx-auto h-full flex items-center justify-center bg-white rounded-lg">
+  <form action="/daftar" method="post" class="w-full max-w-md p-8" onsubmit="setLoadingState()">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <i class="ri-user-add-line text-5xl text-red-700"></i>
+      <h1 class="text-2xl font-bold mt-2">Daftar Akun</h1>
+      <p class="text-gray-500 text-sm">Buat akun baru untuk melanjutkan</p>
+    </div>
+
+    <!-- Input Nama -->
+    <div class="mb-4">
+      <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+      <input 
+        type="text" 
+        id="nama" 
+        name="nama" 
+        placeholder="Masukkan Nama Lengkap Anda"
+        class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none"
+        required
+      >
+    </div>
+
+    <!-- Pilih Kelas -->
+    <div class="mb-4">
+      <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
+      <select name="kelas" class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none" required>
+        <option value="" disabled selected>-- Pilih Kelas --</option>
+      
+        <!-- Guru/Karyawan -->
+        <option value="Guru/Karyawan">
+          Guru/Karyawan
+        </option>
+      
+        <!-- Grouping Kelas -->
+        <optgroup label="Kelas X">
+          <% allKelas.filter(k => k.startsWith('X-') && k !== 'Guru/Karyawan').forEach(kelasItem => { %>
+            <option value="<%= kelasItem %>">
+              <%= kelasItem %>
+            </option>
+          <% }) %>
+        </optgroup>
+      
+        <optgroup label="Kelas XI">
+          <% allKelas.filter(k => k.startsWith('XI-')).forEach(kelasItem => { %>
+            <option value="<%= kelasItem %>">
+              <%= kelasItem %>
+            </option>
+          <% }) %>
+        </optgroup>
+      
+        <optgroup label="Kelas XII">
+          <% allKelas.filter(k => k.startsWith('XII-')).forEach(kelasItem => { %>
+            <option value="<%= kelasItem %>">
+              <%= kelasItem %>
+            </option>
+          <% }) %>
+        </optgroup>
+      </select>
+    </div>
+
+    <!-- Input Password -->
+    <div class="mb-4">
+      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+      <div class="relative">
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          placeholder="Masukkan Password"
+          class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none pr-10"
+          required
+        >
+        <button 
+          type="button" 
+          onclick="togglePassword('password','eyeIcon1')" 
+          class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-red-700"
+        >
+          <i id="eyeIcon1" class="ri-eye-line text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Button Register -->
+    <button 
+      type="submit"
+      id="loginBtn"
+      class="w-full bg-red-700 text-white font-semibold py-2 rounded-lg hover:bg-red-800 transition"
+    >
+      Daftar
+    </button>
+
+    <!-- Link Login -->
+    <p class="text-center text-sm text-gray-600 mt-4">
+      Sudah punya akun?
+      <a href="/login" class="text-red-700 font-semibold hover:underline">Login</a>
+    </p>
+  </form>
+</div>
+
+<!-- Script Toggle Password -->
+<script>
+  function togglePassword(inputId, iconId) {
+    const passwordInput = document.getElementById(inputId);
+    const eyeIcon = document.getElementById(iconId);
+
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      eyeIcon.classList.remove("ri-eye-line");
+      eyeIcon.classList.add("ri-eye-off-line");
+    } else {
+      passwordInput.type = "password";
+      eyeIcon.classList.remove("ri-eye-off-line");
+      eyeIcon.classList.add("ri-eye-line");
+    }
+  }
+  function setLoadingState() {
+    const btn = document.getElementById("loginBtn");
+    btn.disabled = true;
+    btn.innerText = "Loading...";
+    btn.classList.add("animate-pulse", "opacity-70");
+  }
+</script>

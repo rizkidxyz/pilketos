@@ -1,0 +1,57 @@
+<% if (alert) { %>
+<%
+  // Pemetaan untuk styling agar template HTML lebih bersih (Prinsip DRY)
+  const styles = {
+    success: {
+      container: 'bg-green-100 text-green-600 border-green-500',
+      icon: 'ri-checkbox-circle-line'
+    },
+    error: {
+      container: 'bg-red-100 text-red-600 border-red-500',
+      icon: 'ri-close-circle-line'
+    },
+    warning: {
+      container: 'bg-yellow-100 text-yellow-600 border-yellow-500',
+      icon: 'ri-alarm-warning-line'
+    }
+  };
+
+  // Pilih style berdasarkan alert.type, atau gunakan 'warning' sebagai default
+  const currentStyle = styles[alert.type] || styles.warning;
+%>
+
+<div
+  id="toast-alert"
+  class="fixed left-1/2 -translate-x-1/2 z-[999] w-fit max-w-sm
+         flex items-center gap-3 p-3 rounded-lg border-2 shadow-lg
+         transform transition-all duration-500 ease-in-out
+         -top-full opacity-0 <%= currentStyle.container %>"
+>
+  <i class="<%= currentStyle.icon %> text-2xl"></i>
+  <div class="font-semibold text-sm"><%= alert.msg %></div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const toast = document.getElementById("toast-alert");
+    if (!toast) return;
+    
+    // --- Animasi Masuk ---
+    // Memicu animasi setelah DOM dimuat agar transisi berjalan
+    setTimeout(() => {
+      toast.classList.remove("-top-full", "opacity-0");
+      toast.classList.add("top-5", "opacity-100");
+    }, 50); // delaying
+    // --- Animasi Keluar ---
+    // Atur timer untuk menyembunyikan alert
+    const hideTimeout = setTimeout(() => {
+      toast.classList.remove("top-5", "opacity-100");
+      toast.classList.add("-top-full", "opacity-0");
+      // Hapus elemen dari DOM setelah animasi selesai
+      setTimeout(() => {
+        toast.remove();
+      }, 500);
+    }, 3500);
+  });
+</script>
+<% } %>

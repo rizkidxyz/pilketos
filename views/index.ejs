@@ -1,0 +1,102 @@
+<div class="flex flex-col items-center">
+  <img src="https://cdn.aceimg.com/e5279ce19.png" class="aspect-square w-32" alt="Web Build By GILANG" />
+  <h1 class="text-4xl font-extrabold text-center my-4" data-aos="fade-up">SIPEMILU</h1>
+  <div class="text-3xl font-bold mb-4 my-14 text-center" data-aos="fade-up" data-aos-delay="100">
+    <% if(user){ %>
+    Halo <span class="capitalize"><%= user.nama %></span>,
+    <% } %>
+    Selamat Datang di Sistem Informasi Pemilihan Umum
+  </div>
+  <p class="mb-6 text-center text-gray-600 uppercase italic font-bold" data-aos="fade-up" data-aos-delay="150">#Membangun_Era_Digital</p>
+</div>
+<%- include("./components/QuickAccess.ejs") %>
+<div class="my-8 text-center text-4xl font-extrabold">Mengapa menggunakan Sistem Ini?</div>
+<div class="grid md:grid-cols-2 gap-5">
+  <!-- Proses Cepat -->
+  <div class="rounded-lg shadow-lg p-5 bg-gradient-to-bl from-red-500 to-red-900 text-red-50">
+    <div class="text-2xl flex gap-2 items-center">
+      <i class="ri-flashlight-line w-12 text-3xl grid place-content-center aspect-square bg-red-900 rounded-lg"></i>
+      <span class="text-3xl font-extrabold italic">Proses Cepat</span>
+    </div>
+    <div class="mt-3">
+      Proses pemilihan Kandidat kini lebih cepat tanpa memakan banyak waktu seperti sistem manual.
+    </div>
+  </div>
+
+  <!-- Proses Mudah -->
+  <div class="rounded-lg shadow-lg p-5 bg-gradient-to-bl from-red-500 to-red-900 text-red-50">
+    <div class="text-2xl flex gap-2 items-center">
+      <i class="ri-mouse-line w-12 text-3xl grid place-content-center aspect-square bg-red-900 rounded-lg"></i>
+      <span class="text-3xl font-extrabold italic">Proses Mudah</span>
+    </div>
+    <div class="mt-3">
+      Setiap Peserta pemilu dapat melakukan voting secara online dengan langkah sederhana, dan mudah dipahami.
+    </div>
+  </div>
+
+  <!-- Validasi Data -->
+  <div class="rounded-lg shadow-lg p-5 bg-gradient-to-bl from-red-500 to-red-900 text-red-50">
+    <div class="text-2xl flex gap-2 items-center">
+      <i class="ri-shield-check-line w-12 text-3xl grid place-content-center aspect-square bg-red-900 rounded-lg"></i>
+      <span class="text-3xl font-extrabold italic">Validasi Data</span>
+    </div>
+    <div class="mt-3">
+      Data pemilih tervalidasi otomatis dengan baik sehingga semua peserta pemilu wajib dan dapat menggunakan hak pilihnya tanpa ada yang terlewat serta menghindari GolPut dan suara Hangus.
+    </div>
+  </div>
+
+  <!-- LUBERJURDIL -->
+  <div class="rounded-lg shadow-lg p-5 bg-gradient-to-bl from-red-500 to-red-900 text-red-50">
+    <div class="text-2xl flex gap-2 items-center">
+      <i class="ri-scales-3-line w-12 text-3xl grid place-content-center aspect-square bg-red-900 rounded-lg"></i>
+      <span class="text-3xl font-extrabold italic">LUBERJURDIL</span>
+    </div>
+    <div class="mt-3">
+      Pemilihan dilaksanakan dengan prinsip LUBERJURDIL (Langsung, Umum, Bebas, Rahasia, Jujur, dan Adil). tidak satupun pihak lain yang mengetahui kandidat mana yang anda pilih melalu aplikasi termasuk, adminstrator.
+    </div>
+  </div>
+</div>
+
+<!-- Langkah Voting -->
+<div class="mt-16">
+  <h1 class="text-4xl font-extrabold mb-8 text-center">Mulai Langkah demi Langkah!</h1>
+  <div class="grid md:grid-cols-3 gap-5">
+  <div class="rounded-lg shadow-lg p-5 bg-gradient-to-bl from-red-500 to-red-900 text-red-50">
+    <div class="text-2xl flex gap-2 items-center">
+      <i class="ri-user-add-line w-12 text-3xl grid place-content-center aspect-square bg-red-900 rounded-lg"></i>
+      <span class="text-3xl font-extrabold italic">Daftar</span>
+    </div>
+    <div class="mt-3">
+      Peserta pemilu mengunjungi halaman pendaftaran, mengisikan form input dengan data yang benar untuk melanjutkan tahap berikutnya yaitu Login.
+      <nav>
+        <li>Nama Lengkap</li>
+        <li>Kelas</li>
+        <li>Password</li>
+        <li>Re-Password</li>
+      </nav>
+    </div>
+  </div>
+  <div class="rounded-lg shadow-lg p-5 bg-gradient-to-bl from-red-500 to-red-900 text-red-50">
+    <div class="text-2xl flex gap-2 items-center">
+      <i class="ri-login-circle-line w-12 text-3xl grid place-content-center aspect-square bg-red-900 rounded-lg"></i>
+      <span class="text-3xl font-extrabold italic">Login</span>
+    </div>
+    <div class="mt-3">
+      Peserta Guru Karyawan, Siswa/Siswi dan Seluruh Masyarakat  mengunjungi halaman login, mengisikan form input dengan data yang benar untuk melanjutkan pemilihan suara.
+      <nav>
+        <li>Nama Lengkap</li>
+        <li>Password</li>
+      </nav>
+    </div>
+  </div>
+  <div class="rounded-lg shadow-lg p-5 bg-gradient-to-bl from-red-500 to-red-900 text-red-50">
+    <div class="text-2xl flex gap-2 items-center">
+      <i class="ri-pushpin-line w-12 text-3xl grid place-content-center aspect-square bg-red-900 rounded-lg"></i>
+      <span class="text-3xl font-extrabold italic">Pilih</span>
+    </div>
+    <div class="mt-3">
+      Peserta Guru Karyawan, Siswa/Siswi dan Seluruh Masyarakat  wajib dan berhak memilih suara denhan meng-scan barcode kandidat (Calon yang di pilih)
+    </div>
+  </div>
+  </div>
+</div>

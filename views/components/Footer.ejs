@@ -1,0 +1,11 @@
+<footer class="w-full py-12 px-8 bg-red-900">
+  <div class="w-full flex gap-2 justify-center items-center">
+    <img src="https://cdn.aceimg.com/e5279ce19.png" class="aspect-square w-20" alt="Web Build By GILANG" />
+    <div class="text-red-50 text-3xl font-bold">Sistem Informasi Pemilihan Umum</div>
+  </div>
+  <div class="text-center text-white text-sm font-normal capitalize mt-12">Copyright by Gilang <span id="tahun"></span>
+  </div>
+</footer>
+<script>
+  document.getElementById("tahun").textContent=`${new Date().getFullYear()} / ${new Date().getFullYear()+1}`
+</script>

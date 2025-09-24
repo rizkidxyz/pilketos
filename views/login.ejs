@@ -1,0 +1,84 @@
+<div class="w-full max-w-md mx-auto h-full flex items-center justify-center bg-white rounded-lg">
+  <form action="/login" method="post" class="w-full max-w-md p-8" onsubmit="setLoadingState()">
+    <!-- Header -->
+    <div class="text-center mb-6">
+      <i class="ri-login-circle-line text-5xl text-red-700"></i>
+      <h1 class="text-2xl font-bold mt-2">Login</h1>
+      <p class="text-gray-500 text-sm">Masuk untuk melanjutkan</p>
+    </div>
+
+    <!-- Input Nama -->
+    <div class="mb-4">
+      <label for="nama" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+      <input 
+        type="text" 
+        id="nama" 
+        name="nama" 
+        placeholder="Masukkan Nama Lengkap Anda"
+        class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none"
+        required
+      >
+    </div>
+
+    <!-- Input Password -->
+    <div class="mb-6">
+      <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+      <div class="relative">
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          placeholder="Masukkan Password"
+          class="mt-1 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none pr-10"
+          required
+        >
+        <!-- Eye Icon -->
+        <button 
+          type="button" 
+          onclick="togglePassword()" 
+          class="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-red-700"
+        >
+          <i id="eyeIcon" class="ri-eye-line text-xl"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Button Login -->
+    <button 
+      id="loginBtn"
+      type="submit"
+      class="w-full bg-red-700 text-white font-semibold py-2 rounded-lg hover:bg-red-800 transition"
+    >
+      Login
+    </button>
+
+    <!-- Link Daftar -->
+    <p class="text-center text-sm text-gray-600 mt-4">
+      Belum punya akun?
+      <a href="/daftar" class="text-red-700 font-semibold hover:underline">Daftar</a>
+    </p>
+  </form>
+</div>
+
+<!-- Script -->
+<script>
+  function togglePassword() {
+    const passwordInput = document.getElementById("password");
+    const eyeIcon = document.getElementById("eyeIcon");
+    
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      eyeIcon.classList.replace("ri-eye-line", "ri-eye-off-line");
+    } else {
+      passwordInput.type = "password";
+      eyeIcon.classList.replace("ri-eye-off-line", "ri-eye-line");
+    }
+  }
+
+  function setLoadingState() {
+    const btn = document.getElementById("loginBtn");
+    btn.disabled = true;
+    btn.innerText = "Loading...";
+    btn.classList.add("animate-pulse", "opacity-70");
+  }
+</script>

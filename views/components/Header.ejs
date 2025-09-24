@@ -1,0 +1,48 @@
+<%- include("../utils/Message.ejs") %>
+<header class="w-full fixed top-0 z-50 bg-red-900 shadow shadow-black/50">
+  <div class="w-full h-16 max-w-4xl px-4 mx-auto flex justify-between items-center text-white">
+    <!-- Logo -->
+    <a href="/" class="text-2xl font-extrabold">SiPemilu</a>
+    <!-- User menu -->
+    <div class="relative">
+      <% if (user) { %>
+        <!-- Dropdown Trigger -->
+        <button onclick="toggleDropdown()" class="flex items-center gap-2 font-semibold text-lg focus:outline-none">
+          <i class="ri-user-line text-xl"></i>
+          <span class="capitalize"><%= user.nama %></span>
+          <i class="ri-arrow-down-s-line"></i>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div id="dropdownMenu" class="hidden absolute right-0 mt-2 w-52 bg-white text-red-900 rounded-lg shadow-lg overflow-hidden z-50">
+          <% if (user.admin==="true") { %>
+            <a href="/tambah-kandidat" class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+              <i class="ri-user-add-line"></i> Tambah Kandidat 
+            </a>
+          <% } %>
+          <form action="/logout" method="post">
+            <button type="submit" class="w-full text-left flex items-center gap-2 px-4 py-2 hover:bg-gray-100">
+              <i class="ri-logout-circle-r-line"></i> Logout
+            </button>
+          </form>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</header>
+
+<script>
+  function toggleDropdown() {
+    const menu = document.getElementById("dropdownMenu");
+    menu.classList.toggle("hidden");
+  }
+
+  // Klik di luar untuk menutup dropdown
+  window.addEventListener("click", (e) => {
+    const menu = document.getElementById("dropdownMenu");
+    const button = document.querySelector("button[onclick='toggleDropdown()']");
+    if (menu && !menu.contains(e.target) && !button.contains(e.target)) {
+      menu.classList.add("hidden");
+    }
+  });
+</script>

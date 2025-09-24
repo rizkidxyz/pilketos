@@ -1,0 +1,204 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<div class="my-8">
+  <div>
+    <div class="text-center mb-12">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-red-800">
+        Daftar Kandidat Pilihan Anda
+      </h1>
+      <p class="mt-2 text-lg text-red-700">
+        Gunakan hak suara Anda untuk memilih kandidat terbaik.
+      </p>
+    </div>
+
+    <div id="kandidatContainer" 
+         class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% if (data && data.length > 0) { %>
+        <% data.forEach(kandidat => { %>
+          <div class="card bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-t-4 border-red-700">
+            
+            <div class="relative">
+              <img src="<%= kandidat.ft %>" alt="Foto <%= kandidat.nama %>" 
+                   class="w-full aspect-square object-cover object-center">
+              <div class="absolute top-4 left-4 bg-red-700 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold shadow-md">
+                <%= kandidat.nomor %>
+              </div>
+            </div>
+
+            <div class="p-6 flex flex-col flex-grow">
+              <div class="text-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-900 capitalize">
+                  <%= kandidat.nama %>
+                </h2>
+                <% if (kandidat.detail) { %>
+                  <p class="text-sm text-red-700 mt-1 italic whitespace-pre-line">"<%= kandidat.detail %>"</p>
+                <% } %>
+              </div>
+
+              <hr class="my-4 border-dashed">
+
+              <div class="space-y-3 text-sm text-red-700 flex-grow">
+                <div>
+                  <strong class="font-semibold text-red-800">Visi:</strong>
+                  <p class="text-gray-700 whitespace-pre-line"><%= kandidat.visi %></p>
+                </div>
+                <div>
+                  <strong class="font-semibold text-red-800">Misi:</strong>
+                  <p class="text-gray-700 whitespace-pre-line"><%= kandidat.misi %></p>
+                </div>
+              </div>
+              
+              <div class="mt-6 pt-4 border-t border-red-200 flex flex-col items-center gap-4">
+                <% if(user){ %>
+                <button type="button"
+                        class="w-full bg-red-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700 transition-colors duration-300 shadow-md"
+                        data-kandidat-id="<%= kandidat.id %>"
+                        data-kandidat-nomor="<%= kandidat.nomor %>"
+                        data-kandidat-nama="<%= kandidat.nama %>">
+                  VOTE KANDIDAT INI
+                </button>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-span-full text-center py-12">
+          <p class="text-xl text-red-700">Belum ada kandidat yang terdaftar.</p>
+        </div>
+      <% } %>
+    </div>
+
+    <div class="mt-12 text-center">
+      <button onclick="window.location='/data/voting'" 
+           class="bg-red-800 text-white font-semibold py-3 px-8 rounded-lg hover:bg-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700 transition-all duration-300 shadow-lg">
+        Lihat Hasil Vote Real Time
+      </button>
+    </div>
+  </div>
+</div>
+<script>
+  // Fungsi untuk render ulang daftar kandidat dari data JSON
+  function renderKandidat(data, container) {
+    container.innerHTML = ""; // Kosongkan container
+    if (!data || data.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full text-center py-12">
+          <p class="text-xl text-red-700">Belum ada kandidat yang terdaftar.</p>
+        </div>`;
+      return;
+    }
+
+    data.forEach(k => {
+      const card = document.createElement("div");
+      card.className = "card bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border-t-4 border-red-700";
+      
+      card.innerHTML = `
+        <div class="relative">
+          <img src="${k.ft}" alt="Foto ${k.nama}" class="w-full aspect-square object-cover object-center">
+          <div class="absolute top-4 left-4 bg-red-700 text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl font-bold shadow-md">
+            ${k.nomor}
+          </div>
+        </div>
+        <div class="p-6 flex flex-col flex-grow">
+          <div class="text-center mb-4">
+            <h2 class="text-2xl font-bold text-gray-900 capitalize">${k.nama}</h2>
+            ${k.detail ? `<p class="text-sm text-red-700 mt-1 italic whitespace-pre-line">"${k.detail}"</p>` : ""}
+          </div>
+          <hr class="my-4 border-dashed">
+          <div class="space-y-3 text-sm text-red-700 flex-grow">
+            <div>
+              <strong class="font-semibold text-red-800">Visi:</strong>
+              <p class="text-gray-700 whitespace-pre-line">${k.visi}</p>
+            </div>
+            <div>
+              <strong class="font-semibold text-red-800">Misi:</strong>
+              <p class="text-gray-700 whitespace-pre-line">${k.misi}</p>
+            </div>
+          </div>
+          <div class="mt-6 pt-4 border-t border-red-200 flex flex-col items-center gap-4">
+            <% if(user){ %>
+            <button type="button"
+                    class="w-full bg-red-700 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-700 transition-colors duration-300 shadow-md"
+                    data-kandidat-id="${k.id}"
+                    data-kandidat-nomor="${k.nomor}"
+                    data-kandidat-nama="${k.nama}">
+              VOTE KANDIDAT INI
+            </button>
+            <% } %>
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+
+    // Setelah render, pasang event listener pada tombol vote
+    attachVoteListeners();
+  }
+
+  // Fungsi untuk mengirim vote via form tersembunyi
+  function submitVote(kandidatId) {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/vote-kandidat';
+
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'kandidatId';
+    input.value = kandidatId;
+
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+  }
+
+  // Pasang event listener pada semua tombol vote
+  function attachVoteListeners() {
+    document.querySelectorAll('[data-kandidat-id]').forEach(button => {
+      button.addEventListener('click', function () {
+        const id = this.getAttribute('data-kandidat-id');
+        const nomor = this.getAttribute('data-kandidat-nomor');
+        const nama = this.getAttribute('data-kandidat-nama');
+
+        Swal.fire({
+          title: 'Konfirmasi Pilihan',
+          text: `Yakin pilih Paslon nomor urut ${nomor} (${nama.toUpperCase()})?`,
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Ya, Pilih!',
+          cancelButtonText: 'Batal',
+          reverseButtons: true,
+          confirmButtonColor: '#dc2626', // red-700
+          cancelButtonColor: '#6b7280'   // gray-500
+        }).then((result) => {
+          if (result.isConfirmed) {
+            submitVote(id);
+          }
+        });
+      });
+    });
+  }
+
+  // Jalankan saat DOM sudah siap
+  document.addEventListener("DOMContentLoaded", function() {
+    // Inisialisasi Socket.IO
+    const socket = io();
+    const kandidatContainer = document.getElementById("kandidatContainer");
+
+    // Pasang listener awal untuk tombol vote (jika ada di HTML awal)
+    attachVoteListeners();
+
+    // Listener untuk update real-time
+    socket.on("updateKandidat", () => {
+      console.log("Menerima update kandidat, mengambil data baru...");
+      fetch("/api/kandidat")
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            renderKandidat(json.data, kandidatContainer);
+          }
+        })
+        .catch(err => console.error("Gagal mengambil data kandidat:", err));
+    });
+  });
+</script>

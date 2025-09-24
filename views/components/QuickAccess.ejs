@@ -1,0 +1,52 @@
+<!-- Quick Access -->
+<div class="py-10">
+  <h2 class="text-4xl mb-6 text-center font-extrabold">Quick Access</h2>
+  
+  <div class="grid md:grid-cols-2 gap-6">
+    <!-- Card Daftar -->
+    <%
+    const qca = [
+      {
+        icon: "ri-user-add-line",
+        href: "/daftar",
+        label: "Daftar",
+        detail: "Daftarkan diri Anda untuk membuat akun peserta dan dapatkan akses untuk menggunakan hak suara Anda dalam pemilihan kandidat."
+      },
+      {
+        icon: "ri-user-shared-line",
+        href: "/login",
+        label: "Masuk",
+        detail: "Masuk ke akun yang telah Anda daftarkan dengan benar untuk melanjutkan proses pemilihan kandidat terbaik Anda."
+      },
+      {
+        icon: "ri-pushpin-line",
+        href: "/kandidat",
+        label: "Pilih Kandidat",
+        detail: "Gunakan hak suara anda untuk memilih kandidat terbaik sesuai dengan visi dan misi Anda."
+      },
+      {
+        icon: "ri-search-eye-line",
+        href: "/data",
+        label: "Lihat Data",
+        detail: "Akses informasi terbaru mengenai data peserta, kandidat, dan hasil penghitungan suara secara real-time, transparan, dan akurat."
+      },
+    ];
+    %>
+    <% qca.forEach(item => { %>
+      <div data-aos="fade-up">
+        <a 
+          href="<%= item.href %>" 
+          class="flex items-center gap-4 p-5 rounded-xl shadow-lg 
+                 bg-gradient-to-br from-red-500 to-red-900 text-red-50 
+                 hover:-translate-y-2 transition transform h-full"
+        >
+          <i class="<%= item.icon %> text-3xl bg-red-900 p-2 rounded-lg"></i>
+          <div>
+            <h3 class="font-bold text-3xl"><%= item.label %></h3>
+            <p class="text-base text-red-100"><%= item.detail %></p>
+          </div>
+        </a>
+      </div>
+    <% }); %>
+  </div>
+</div>

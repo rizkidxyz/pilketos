@@ -1,0 +1,176 @@
+<div class="w-full py-10">
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-2xl font-bold text-center text-red-700 mb-8">
+      Data Peserta
+    </h1>
+
+    <!-- Filter -->
+    <form id="filterForm" method="get" action="/data/peserta" 
+          class="flex flex-wrap gap-3 mb-6 items-center bg-gray-50 p-4 rounded-lg shadow">
+      <input type="text" name="search" placeholder="Cari Nama"
+             value="<%= search %>"
+             class="px-3 py-2 border border-gray-300 rounded-lg flex-1 capitalize focus:ring-2 focus:ring-red-600 focus:outline-none"/>
+             
+      <select name="kelas" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none">
+        <option value="">Semua Kelas</option>
+      
+        <!-- Guru/Karyawan -->
+        <option value="Guru/Karyawan" <%= kelas === "Guru/Karyawan" ? 'selected' : '' %>>
+          Guru/Karyawan
+        </option>
+      
+        <!-- Grouping Kelas -->
+        <optgroup label="Kelas X">
+          <% allKelas.filter(k => k.startsWith('X-') && k !== 'Guru/Karyawan').forEach(kelasItem => { %>
+            <option value="<%= kelasItem %>" <%= kelas === kelasItem ? 'selected' : '' %>>
+              <%= kelasItem %>
+            </option>
+          <% }) %>
+        </optgroup>
+      
+        <optgroup label="Kelas XI">
+          <% allKelas.filter(k => k.startsWith('XI-')).forEach(kelasItem => { %>
+            <option value="<%= kelasItem %>" <%= kelas === kelasItem ? 'selected' : '' %>>
+              <%= kelasItem %>
+            </option>
+          <% }) %>
+        </optgroup>
+      
+        <optgroup label="Kelas XII">
+          <% allKelas.filter(k => k.startsWith('XII-')).forEach(kelasItem => { %>
+            <option value="<%= kelasItem %>" <%= kelas === kelasItem ? 'selected' : '' %>>
+              <%= kelasItem %>
+            </option>
+          <% }) %>
+        </optgroup>
+      </select>
+      <select name="voted" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none">
+        <option value="all" <%= voted==="all"?"selected":"" %>>Semua Status</option>
+        <option value="yes" <%= voted==="yes"?"selected":"" %>>Sudah Memilih</option>
+        <option value="no" <%= voted==="no"?"selected":"" %>>Belum Memilih</option>
+      </select>
+
+      <select name="limit" class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-600 focus:outline-none">
+        <% [50,100,150,200,500].forEach(l => { %>
+          <option value="<%= l %>" <%= limit==l?"selected":"" %>><%= l %></option>
+        <% }) %>
+      </select>
+
+      <button type="submit" class="bg-red-700 text-white px-4 py-2 rounded-lg hover:bg-red-800">
+        Terapkan
+      </button>
+    </form>
+
+    <!-- Table -->
+    <div class="overflow-x-auto shadow border border-gray-300 rounded-lg bg-white">
+      <% if (data.length > 0) { %>
+      <table class="w-full text-sm text-left border-collapse">
+        <thead class="bg-red-700 text-white">
+          <tr>
+            <th class="px-4 py-2 border border-gray-300">Nama</th>
+            <th class="px-4 py-2 border border-gray-300">Kelas</th>
+            <th class="px-4 py-2 border border-gray-300">Status</th>
+          </tr>
+        </thead>
+        <tbody id="pesertaTable">
+          <% data.forEach(p => { %>
+            <tr class="hover:bg-gray-100">
+              <td class="px-4 py-2 border border-gray-300 capitalize"><%= p.nama %></td>
+              <td class="px-4 py-2 border border-gray-300"><%= p.kelas %></td>
+              <td class="px-4 py-2 border border-gray-300">
+                <% if(p.voted){ %>
+                  <span class="px-2 py-1 bg-green-600 text-white rounded text-xs">Sudah Memilih</span>
+                <% }else{ %>
+                  <span class="px-2 py-1 bg-orange-600 text-white rounded text-xs">Belum Memilih</span>
+                <% } %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } else { %>
+        <div class="p-6 text-center text-gray-500">Tidak ada data peserta</div>
+      <% } %>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center gap-4 mt-6">
+      <% if (page > 1) { %>
+        <a href="?page=<%= page-1 %>&limit=<%= limit %>&search=<%= search %>&kelas=<%= kelas %>&voted=<%= voted %>"
+           class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">&lt;</a>
+      <% } %>
+      <span class="px-4 py-1 text-sm text-gray-600">Halaman <%= page %> dari <%= totalPages %></span>
+      <% if (page < totalPages) { %>
+        <a href="?page=<%= page+1 %>&limit=<%= limit %>&search=<%= search %>&kelas=<%= kelas %>&voted=<%= voted %>"
+           class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">&gt;</a>
+      <% } %>
+    </div>
+
+    <!-- Export -->
+    <div class="flex justify-end mt-4">
+      <button id="exportExcel" 
+              class="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700">
+        Export Excel
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Lib Excel -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+
+  // realtime update
+  socket.on("updatePeserta", () => {
+    const query = window.location.search;
+    fetch("/api/peserta" + query)
+      .then(res => res.json())
+      .then(json => {
+        if (json.success) {
+          const tableBody = document.getElementById("pesertaTable");
+          tableBody.innerHTML = "";
+
+          if (json.data.length === 0) {
+            tableBody.innerHTML = `
+              <tr><td colspan="3" class="text-center py-4 text-gray-500">Tidak ada data peserta</td></tr>
+            `;
+            return;
+          }
+
+          json.data.forEach(p => {
+            const row = document.createElement("tr");
+            row.classList.add("hover:bg-gray-100");
+            row.innerHTML = `
+              <td class="px-4 py-2 border border-gray-300 capitalize">${p.nama}</td>
+              <td class="px-4 py-2 border border-gray-300">${p.kelas}</td>
+              <td class="px-4 py-2 border border-gray-300">
+                ${p.voted 
+                  ? '<span class="px-2 py-1 bg-green-600 text-white rounded text-xs">Sudah Memilih</span>'
+                  : '<span class="px-2 py-1 bg-orange-600 text-white rounded text-xs">Belum Memilih</span>'
+                }
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        }
+      });
+  });
+
+  // export ke excel
+  document.getElementById("exportExcel").addEventListener("click", () => {
+    const table = document.querySelector("table");
+
+    // clone table dan ubah nama menjadi capitalize
+    const clonedTable = table.cloneNode(true);
+    clonedTable.querySelectorAll("td.capitalize").forEach(td => {
+      td.textContent = td.textContent
+        .toLowerCase()
+        .replace(/\b\w/g, l => l.toUpperCase());
+    });
+
+    const wb = XLSX.utils.table_to_book(clonedTable, { sheet: "Peserta" });
+    XLSX.writeFile(wb, "data-peserta.xlsx");
+  });
+</script>
